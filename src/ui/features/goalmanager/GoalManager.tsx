@@ -93,6 +93,21 @@ const toggleEmojiPicker = () => {
 const onAddIconClick = () => {
   toggleEmojiPicker()
 }
+const pickEmojiOnClick = (emoji: any, event: React.MouseEvent) => {
+  const updatedGoal: Goal = {
+    ...props.goal,
+    name: name ?? props.goal.name,
+    targetDate: targetDate ?? props.goal.targetDate,
+    targetAmount: targetAmount ?? props.goal.targetAmount,
+    icon: emoji.native,
+  }
+
+  setIcon(emoji.native)
+  setIsEmojiPickerOpen(false)
+
+  dispatch(updateGoalRedux(updatedGoal))
+  updateGoalApi(props.goal.id, updatedGoal)
+}
 
   return (
     <GoalManagerContainer>
@@ -105,23 +120,7 @@ const onAddIconClick = () => {
 {icon && <GoalIcon icon={icon} onClick={onAddIconClick} />}
 
 {isEmojiPickerOpen && (
-  <EmojiPicker
-    onClick={(emoji: any, event: React.MouseEvent) => {
-      const updatedGoal: Goal = {
-        ...props.goal,
-        name: name ?? props.goal.name,
-        targetDate: targetDate ?? props.goal.targetDate,
-        targetAmount: targetAmount ?? props.goal.targetAmount,
-        icon: emoji.native,
-      }
-
-      setIcon(emoji.native)
-      setIsEmojiPickerOpen(false)
-
-      dispatch(updateGoalRedux(updatedGoal))
-      updateGoalApi(props.goal.id, updatedGoal)
-    }}
-  />
+  <EmojiPicker onClick={pickEmojiOnClick} />
 )}
       <Group>
         <Field name="Target Date" icon={faCalendarAlt} />
